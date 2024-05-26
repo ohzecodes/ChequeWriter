@@ -14,8 +14,8 @@ import java.util.Map;
 
 
 public class MainController {
-
     @FXML
+    public TextField Profile_Name;
     public ComboBox bankCombo;
     public Button PrintButton;
     // these are the DATA objects

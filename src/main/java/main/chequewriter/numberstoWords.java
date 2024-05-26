@@ -77,7 +77,7 @@ public class numberstoWords {
         while (number > 0) {
             if (number % 1000 != 0) {
                 String segment = threeDigitNumberToWords((int) (number % 1000));
-                words = segment + thousands[thousandIndex] + " " + words;
+                words = segment +" "+ thousands[thousandIndex] + " " + words;
             }
             number /= 1000;
             thousandIndex++;
