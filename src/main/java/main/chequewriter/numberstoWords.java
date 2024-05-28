@@ -1,12 +1,34 @@
 package main.chequewriter;
 
 public class numberstoWords {
-    final static String DOLLAR = "dollar";
-    final static String CENT = "cent";
-    final static String DOLLARS = DOLLAR + "s";
+    private static String DOLLAR;
+    private static String CENT ;
+    private static String DOLLARS;
 
-    final static String CENTS = CENT + "s";
+    private static String CENTS ;
 
+    public static void setDOLLAR(String DOLLAR) {
+        numberstoWords.DOLLAR = DOLLAR;
+        DOLLARS=DOLLAR+"s";
+    }
+
+    public static void setCENT(String CENT) {
+        numberstoWords.CENT = CENT;
+        CENTS=CENT+"s";
+    }
+
+    private static  final  String[] units = {
+            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+            "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"
+    };
+
+    private static  final  String[] tens = {
+            "", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"
+    };
+
+    private static  final  String[] thousands = {
+            "", "thousand", "million", "billion", "trillion"
+    };
 
     public static String convertDigitsToWords(String digits) {
 
@@ -52,18 +74,7 @@ public class numberstoWords {
         }
     }
 
-    private static  final  String[] units = {
-            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-            "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"
-    };
 
-    private static  final  String[] tens = {
-            "", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"
-    };
-
-    private static  final  String[] thousands = {
-            "", "thousand", "million", "billion", "trillion"
-    };
 
     private static String numberToWords(long number) {
         if (number == 0) {

@@ -12,7 +12,47 @@ import java.util.Map;
 
 public class SaveHelper {
 
-    public static void saveAsPDF(double width, double height, ArrayList<Map<String, Object>> data) {
+    private static String SaveLocation=".";
+    private static String FontName;
+    private static String FontSize;
+
+    public static void setFontName(String fontName) {
+        FontName = fontName;
+    }
+
+    public static void setFontSize(String fontSize) {
+        FontSize = fontSize;
+    }
+
+    public static void setSaveLocation(String saveLocation) {
+        SaveLocation = saveLocation;
+    }
+
+    public static PDType1Font getFontByName(String fontName) {
+        if (fontName == null) {
+          return PDType1Font.HELVETICA;
+        }
+
+        return switch (fontName.toUpperCase()) {
+            case "HELVETICA" -> PDType1Font.HELVETICA;
+            case "HELVETICA_BOLD" -> PDType1Font.HELVETICA_BOLD;
+            case "HELVETICA_OBLIQUE" -> PDType1Font.HELVETICA_OBLIQUE;
+            case "HELVETICA_BOLD_OBLIQUE" -> PDType1Font.HELVETICA_BOLD_OBLIQUE;
+            case "TIMES_ROMAN" -> PDType1Font.TIMES_ROMAN;
+            case "TIMES_BOLD" -> PDType1Font.TIMES_BOLD;
+            case "TIMES_ITALIC" -> PDType1Font.TIMES_ITALIC;
+            case "TIMES_BOLD_ITALIC" -> PDType1Font.TIMES_BOLD_ITALIC;
+            case "COURIER" -> PDType1Font.COURIER;
+            case "COURIER_BOLD" -> PDType1Font.COURIER_BOLD;
+            case "COURIER_OBLIQUE" -> PDType1Font.COURIER_OBLIQUE;
+            case "COURIER_BOLD_OBLIQUE" -> PDType1Font.COURIER_BOLD_OBLIQUE;
+            case "SYMBOL" -> PDType1Font.SYMBOL;
+            case "ZAPF_DINGBATS" -> PDType1Font.ZAPF_DINGBATS;
+            default -> throw new IllegalArgumentException("Unknown font name: " + fontName);
+        };
+    }
+
+    public static void saveAsPDF(double width, double height, Map<String, Object> coordinates, Map<String, Object> chequeData) {
 
         PDDocument document = new PDDocument();
 
@@ -20,12 +60,15 @@ public class SaveHelper {
         document.addPage(page);
 
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-            for (Map<String, Object> map : data) {
-                write(contentStream, (String) map.get("name"), (int) map.get("x"),(int) map.get("y"));
-            }
+            // Write cheque data using coordinates
+            write(contentStream, (String) chequeData.get("date"), (int) ((Map<String, Object>) coordinates.get("date")).get("x"), (int) ((Map<String, Object>) coordinates.get("date")).get("y"));
+            write(contentStream, (String) chequeData.get("payee"), (int) ((Map<String, Object>) coordinates.get("payee")).get("x"), (int) ((Map<String, Object>) coordinates.get("payee")).get("y"));
+            write(contentStream, (String) chequeData.get("amountDigits"), (int) ((Map<String, Object>) coordinates.get("digits")).get("x"), (int) ((Map<String, Object>) coordinates.get("digits")).get("y"));
+            write(contentStream, (String) chequeData.get("amountWords"), (int) ((Map<String, Object>) coordinates.get("words")).get("x"), (int) ((Map<String, Object>) coordinates.get("words")).get("y"));
 
             contentStream.close();
-            document.save("payee-date.pdf");
+            document.save(SaveLocation+"/bkNAME-PAYEE-DATE-cheque.pdf");
+            System.out.println(SaveLocation+"/bkNAME-PAYEE-DATE-cheque.pdf");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -37,11 +80,15 @@ public class SaveHelper {
         }
     }
 
+
     public static void write(PDPageContentStream contentStream, String text, double x, double y) throws IOException {
-        contentStream.setFont(PDType1Font.HELVETICA, 12);
+        float fs = (FontSize != null) ? Float.parseFloat(FontSize) : 8f;
+        contentStream.setFont(getFontByName(FontName), fs);
         contentStream.beginText();
         contentStream.newLineAtOffset((float) x, (float) y);
         contentStream.showText(text);
         contentStream.endText();
     }
+
+
 }

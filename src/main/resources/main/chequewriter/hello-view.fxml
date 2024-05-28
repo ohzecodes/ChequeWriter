@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -15,10 +16,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="909.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18.0.2" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="main.chequewriter.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="909.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.chequewriter.MainController">
    <children>
        <ComboBox fx:id="bankCombo" layoutX="30.0" layoutY="36.0" prefHeight="26.0" prefWidth="454.0" />
-      <TitledPane animated="false" layoutX="27.0" layoutY="66.0" prefHeight="343.0" prefWidth="458.0" text="coordinates">
+      <TitledPane animated="false" collapsible="false" layoutX="27.0" layoutY="66.0" prefHeight="343.0" prefWidth="458.0" text="coordinates">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="306.0" prefWidth="456.0">
                <children>
@@ -72,12 +73,12 @@
                         </GridPane>
                      </children>
                   </VBox>
-                  <Button layoutX="170.0" layoutY="276.0" mnemonicParsing="false" text="SAVE" />
+                  <Button fx:id="SaveCoordinates" layoutX="170.0" layoutY="276.0" mnemonicParsing="false" text="SAVE" />
                </children>
             </AnchorPane>
         </content>
       </TitledPane>
-      <TitledPane animated="false" layoutX="25.0" layoutY="422.0" prefHeight="388.0" prefWidth="461.0" text="Data">
+      <TitledPane animated="false" collapsible="false" layoutX="25.0" layoutY="422.0" prefHeight="388.0" prefWidth="461.0" text="Data">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="361.0" prefWidth="468.0">
                <children>
@@ -97,10 +98,10 @@
                         <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" text="AmmountDigits" textAlignment="CENTER" GridPane.rowIndex="2" />
                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" text="AmmountWords (autogen)" textAlignment="CENTER" GridPane.rowIndex="3" />
                         <Label alignment="CENTER" prefHeight="17.0" prefWidth="184.0" text="Date" />
-                        <TextField fx:id="Ddate" GridPane.columnIndex="1" />
                         <TextField fx:id="Dpayee" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="Ddigits" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                          <TextArea fx:id="Dwords" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <DatePicker fx:id="dDate" GridPane.columnIndex="1" />
       
                            </children>
                   </GridPane>
@@ -108,12 +109,12 @@
             </AnchorPane>
         </content>
       </TitledPane>
-      <Button fx:id="PrintButton" layoutX="168.0" layoutY="808.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="229.0" text="Print Cheque" />
-      <TitledPane animated="false" layoutX="595.0" layoutY="65.0" prefHeight="327.0" prefWidth="364.0" text="Other settings">
+      <Button fx:id="PrintButton" layoutX="168.0" layoutY="808.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="229.0" text="save as PDF" />
+      <TitledPane animated="false" collapsible="false" layoutX="505.0" layoutY="67.0" prefHeight="343.0" prefWidth="430.0" text="Other settings">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="300.0" prefWidth="441.0">
                <children>
-                  <GridPane layoutX="53.0" layoutY="90.0" prefHeight="141.0" prefWidth="235.0">
+                  <GridPane layoutX="39.0" layoutY="18.0" prefHeight="243.0" prefWidth="322.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -123,19 +124,22 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label prefHeight="17.0" prefWidth="115.0" text="Currency" />
-                        <TextField GridPane.columnIndex="1" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="Currency" GridPane.columnIndex="1" />
+                        <TextField fx:id="Cents" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label prefHeight="17.0" prefWidth="114.0" text="Cents" GridPane.rowIndex="1" />
-                        <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="fontName" prefHeight="26.0" prefWidth="168.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label prefHeight="17.0" prefWidth="114.0" text="Font" GridPane.rowIndex="2" />
                         <Label prefHeight="17.0" prefWidth="114.0" text="Font Size" GridPane.rowIndex="3" />
-                        <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="FontSize" prefHeight="26.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button fx:id="ChooseDirectory" mnemonicParsing="false" prefHeight="48.0" prefWidth="173.0" text="Select..." wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label prefHeight="17.0" prefWidth="120.0" text="Directory to save pdf" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
-                  <Button layoutX="154.0" layoutY="254.0" mnemonicParsing="false" text="SAVE" />
+                  <Button fx:id="BtnSaveSettings" layoutX="153.0" layoutY="282.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="SAVE" />
                </children>
             </AnchorPane>
         </content>
