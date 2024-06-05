@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -16,12 +17,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="909.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.chequewriter.MainController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity" prefHeight="909.0" prefWidth="1080.0"
+            xmlns="http://javafx.com/javafx/18.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.chequewriter.MainController">
    <children>
-       <ComboBox fx:id="bankCombo" layoutX="30.0" layoutY="36.0" prefHeight="26.0" prefWidth="454.0" />
-      <TitledPane animated="false" collapsible="false" layoutX="27.0" layoutY="66.0" prefHeight="343.0" prefWidth="458.0" text="coordinates">
+
+       <ComboBox fx:id="bankCombo" layoutX="31.0" layoutY="13.0" prefHeight="26.0" prefWidth="454.0" />
+      <TitledPane animated="false" collapsible="false" layoutX="27.0" layoutY="66.0" prefHeight="350.0" prefWidth="458.0" text="coordinates (from the bottom left corner of the page)">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="306.0" prefWidth="456.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="350.0" prefWidth="454.0">
                <children>
                   <VBox layoutX="-2.0" layoutY="4.0" prefHeight="261.0" prefWidth="399.0">
                      <children>
@@ -54,8 +58,8 @@
                               <Label alignment="CENTER" prefHeight="17.0" prefWidth="108.0" text="Payee" textAlignment="CENTER" GridPane.rowIndex="3" />
                               <Label alignment="CENTER" prefHeight="17.0" prefWidth="108.0" text="AmmountDigits" textAlignment="CENTER" GridPane.rowIndex="4" />
                               <Label alignment="CENTER" prefHeight="17.0" prefWidth="108.0" text="AmmountWords" GridPane.rowIndex="5" />
-                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="118.0" text="X" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="108.0" text="Y" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="118.0" text="X (increase right)" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="143.0" text="Y (increase upwards)" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                               <TextField fx:id="dateX" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <TextField fx:id="dateY" prefHeight="7.0" prefWidth="160.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                               <TextField fx:id="PayeeX" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -73,12 +77,12 @@
                         </GridPane>
                      </children>
                   </VBox>
-                  <Button fx:id="SaveCoordinates" layoutX="170.0" layoutY="276.0" mnemonicParsing="false" text="SAVE" />
+                  <Button fx:id="SaveCoordinates" layoutX="170.0" layoutY="276.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="SAVE" />
                </children>
             </AnchorPane>
         </content>
       </TitledPane>
-      <TitledPane animated="false" collapsible="false" layoutX="25.0" layoutY="422.0" prefHeight="388.0" prefWidth="461.0" text="Data">
+      <TitledPane animated="false" collapsible="false" layoutX="25.0" layoutY="441.0" prefHeight="369.0" prefWidth="461.0" text="Data">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="361.0" prefWidth="468.0">
                <children>
@@ -109,12 +113,12 @@
             </AnchorPane>
         </content>
       </TitledPane>
-      <Button fx:id="PrintButton" layoutX="168.0" layoutY="808.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="229.0" text="save as PDF" />
-      <TitledPane animated="false" collapsible="false" layoutX="505.0" layoutY="67.0" prefHeight="343.0" prefWidth="430.0" text="Other settings">
+      <Button fx:id="PrintButton" layoutX="328.0" layoutY="826.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="229.0" text="save as PDF" />
+      <TitledPane animated="false" collapsible="false" layoutX="505.0" layoutY="65.0" prefHeight="350.0" prefWidth="430.0" text="Other settings">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="300.0" prefWidth="441.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="350.0" prefWidth="428.0">
                <children>
-                  <GridPane layoutX="39.0" layoutY="18.0" prefHeight="243.0" prefWidth="322.0">
+                  <GridPane layoutX="20.0" layoutY="1.0" prefHeight="229.0" prefWidth="341.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -139,11 +143,13 @@
                         <Label prefHeight="17.0" prefWidth="120.0" text="Directory to save pdf" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
-                  <Button fx:id="BtnSaveSettings" layoutX="153.0" layoutY="282.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="SAVE" />
+                  <Button fx:id="BtnSaveSettings" layoutX="143.0" layoutY="279.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="SAVE" />
                </children>
             </AnchorPane>
         </content>
       </TitledPane>
 
    </children>
+    <stylesheets>
+        <URL value="@main.css" />  </stylesheets>
 </AnchorPane>

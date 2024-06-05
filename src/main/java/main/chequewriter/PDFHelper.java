@@ -7,10 +7,9 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
-public class SaveHelper {
+public class PDFHelper {
 
     private static String SaveLocation=".";
     private static String FontName;
@@ -52,7 +51,7 @@ public class SaveHelper {
         };
     }
 
-    public static void saveAsPDF(double width, double height, Map<String, Object> coordinates, Map<String, Object> chequeData) {
+    public static void saveAsPDF(double width, double height, Map<String, Object> coordinates, Map<String, Object> chequeData, String bankName) {
 
         PDDocument document = new PDDocument();
 
@@ -60,15 +59,16 @@ public class SaveHelper {
         document.addPage(page);
 
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-            // Write cheque data using coordinates
-            write(contentStream, (String) chequeData.get("date"), (int) ((Map<String, Object>) coordinates.get("date")).get("x"), (int) ((Map<String, Object>) coordinates.get("date")).get("y"));
-            write(contentStream, (String) chequeData.get("payee"), (int) ((Map<String, Object>) coordinates.get("payee")).get("x"), (int) ((Map<String, Object>) coordinates.get("payee")).get("y"));
-            write(contentStream, (String) chequeData.get("amountDigits"), (int) ((Map<String, Object>) coordinates.get("digits")).get("x"), (int) ((Map<String, Object>) coordinates.get("digits")).get("y"));
-            write(contentStream, (String) chequeData.get("amountWords"), (int) ((Map<String, Object>) coordinates.get("words")).get("x"), (int) ((Map<String, Object>) coordinates.get("words")).get("y"));
+            String  payee= (String) chequeData.get("payee");
+            String date=chequeData.get("date").toString();
+            write(contentStream, date, (double) ((Map<String, Object>) coordinates.get("date")).get("x"), (double)((Map<String, Object>) coordinates.get("date")).get("y"));
+            write(contentStream, payee, (double) ((Map<String, Object>) coordinates.get("payee")).get("x"), (double)((Map<String, Object>) coordinates.get("payee")).get("y"));
+            write(contentStream, (String) chequeData.get("amountDigits"), (double)((Map<String, Object>) coordinates.get("digits")).get("x"), (double) ((Map<String, Object>) coordinates.get("digits")).get("y"));
+            write(contentStream, (String) chequeData.get("amountWords"), (double) ((Map<String, Object>) coordinates.get("words")).get("x"), (double)((Map<String, Object>) coordinates.get("words")).get("y"));
 
             contentStream.close();
-            document.save(SaveLocation+"/bkNAME-PAYEE-DATE-cheque.pdf");
-            System.out.println(SaveLocation+"/bkNAME-PAYEE-DATE-cheque.pdf");
+            document.save(SaveLocation+String.format("/%s-%s-%s-cheque.pdf",date, bankName, payee));
+//            System.out.println(SaveLocation+"/bkNAME-PAYEE-DATE-cheque.pdf");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -82,12 +82,16 @@ public class SaveHelper {
 
 
     public static void write(PDPageContentStream contentStream, String text, double x, double y) throws IOException {
+        System.out.println( text+ x+y);
+
         float fs = (FontSize != null) ? Float.parseFloat(FontSize) : 8f;
         contentStream.setFont(getFontByName(FontName), fs);
         contentStream.beginText();
+        contentStream.newLineAtOffset(0, 0);
         contentStream.newLineAtOffset((float) x, (float) y);
         contentStream.showText(text);
         contentStream.endText();
+
     }
 
 

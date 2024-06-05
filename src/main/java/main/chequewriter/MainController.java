@@ -6,30 +6,31 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
-
+//import static
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
+import static main.chequewriter.tools.showInvalidAlert;
 
 
 public class MainController {
 
     @FXML
-    public TextField Profile_Name;
+//    public TextField
     public ComboBox<Object> bankCombo;
-    public Button PrintButton;
+
     public Button ChooseDirectory;
+
+    public Button SaveCoordinates, BtnSaveSettings,PrintButton;
     public DatePicker dDate;
-    public Button SaveCoordinates, BtnSaveSettings;
-    ;
-
-
-    // these are the DATA objects
+    public AnchorPane rootPane;
     @FXML
     private TextField Dpayee, Ddigits;
 
@@ -37,30 +38,10 @@ public class MainController {
     private TextArea Dwords;
 
     @FXML
-    private TextField dateX, dateY, PayeeX, PayeeY, digitsX, digitsY, AwordsX, AwordsY;
+    private TextField dateX, dateY, PayeeX, PayeeY, digitsX, digitsY, AwordsX, AwordsY,Profile_Name;
 
     public ComboBox<String> FontSize ,fontName;
     public TextField Cents,Currency;
-    @FXML
-    private void handleChooseDirectory() {
-
-        Stage stage = (Stage) ChooseDirectory.getScene().getWindow();
-        File selectedDirectory = openDirectoryChooser(stage);
-        if (selectedDirectory != null) {
-            ChooseDirectory.setText(selectedDirectory.getAbsolutePath());
-        }
-        assert selectedDirectory != null;
-        SaveHelper.setSaveLocation(selectedDirectory.getAbsolutePath());
-    }
-
-
-    private File openDirectoryChooser(Stage ownerWindow) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Select Directory");
-        // Show the directory chooser
-        return directoryChooser.showDialog(ownerWindow);
-    }
-
     @FXML
     public void initialize() {
         ChooseDirectory.setOnAction(e -> handleChooseDirectory());
@@ -75,8 +56,8 @@ public class MainController {
         });
 
         PrintButton.setOnAction(e -> printDocument());
-       ArrayList<String> a= (ArrayList<String>) DBhelper.getProfileNamesFromSQLite();
-       a.add("new");
+        ArrayList<String> a= (ArrayList<String>) DBhelper.getProfileNamesFromSQLite();
+        a.add("new");
         ObservableList<Object> options = FXCollections.observableArrayList(a);
         bankCombo.setItems(options);
         bankCombo.setValue(options.get(options.size() - 1));
@@ -101,19 +82,35 @@ public class MainController {
         fontName.setItems(FXCollections.observableArrayList("Times-Roman", "Helvetica", "Courier", "Symbol", "ZapfDingbats"));
         fontName.setOnAction(e->{
             String selectedOption =  fontName.getValue().replace("[", "").replace("]", "");;
-            SaveHelper.setFontName(selectedOption);
+            PDFHelper.setFontName(selectedOption);
         });
-        SaveHelper.setFontName(fontName.getValue());
+        PDFHelper.setFontName(fontName.getValue());
         FontSize.setOnAction(e->{
             String selectedOption =  FontSize.getValue().replace("[", "").replace("]", "");;
-            SaveHelper.setFontSize(selectedOption);
+            PDFHelper.setFontSize(selectedOption);
         });
-        SaveHelper.setFontSize(FontSize.getValue());
+        PDFHelper.setFontSize(FontSize.getValue());
         BtnSaveSettings.setOnAction(e->saveOtherSetting());
         setOtherSettings(DBhelper.getOtherSettings());
 
     }
+    private void handleChooseDirectory() {
 
+        Stage stage = (Stage) ChooseDirectory.getScene().getWindow();
+        File selectedDirectory = openDirectoryChooser(stage);
+        if (selectedDirectory != null) {
+            ChooseDirectory.setText(selectedDirectory.getAbsolutePath());
+        }
+        assert selectedDirectory != null;
+        PDFHelper.setSaveLocation(selectedDirectory.getAbsolutePath());
+    }
+
+    private File openDirectoryChooser(Stage ownerWindow) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select Directory");
+        // Show the directory chooser
+        return directoryChooser.showDialog(ownerWindow);
+    }
     private void setOtherSettings(Map<String, String> otherSettings){
 
         Currency.setText(otherSettings.getOrDefault("CURRENCY","dollar"));
@@ -123,12 +120,21 @@ public class MainController {
         ChooseDirectory.setText(otherSettings.getOrDefault("DIRECTORY","Select..."));
         numberstoWords.setDOLLAR(Currency.getText());
         numberstoWords.setCENT(Cents.getText());
-        assert !ChooseDirectory.getText().contains("Select...");
-        SaveHelper.setSaveLocation(ChooseDirectory.getText());
+        assert !isDirectoryChooserEmpty(ChooseDirectory);
+        PDFHelper.setSaveLocation(ChooseDirectory.getText());
 
     }
-
     private void saveOtherSetting() {
+
+
+        if (!isOtherSettingsValid()){
+            showInvalidAlert("something is invalid, please check");
+            checkAndHighlightEmptyFields(Currency,Cents);
+            checkAndHighlightEmptyFields(fontName,FontSize);
+           checkAndHighlightDirectoryChooser(ChooseDirectory);
+
+            return;
+        }
         Map<String, String> map=new HashMap<>();
         map.put("CURRENCY", Currency.getText());
         map.put("CENTS", Cents.getText());
@@ -140,8 +146,8 @@ public class MainController {
         numberstoWords.setCENT(Cents.getText());
 
     }
-
     private void clearCoordinates() {
+        Profile_Name.setText("");
         dateX.setText("");
         dateY.setText("");
         PayeeX.setText("");
@@ -152,7 +158,6 @@ public class MainController {
         AwordsY.setText("");
         SaveCoordinates.setVisible(true);
     }
-
     private void setCoordinates(Map<String, Object> coordinatesByProfileName) {
 
         // Retrieve values from the map
@@ -174,13 +179,11 @@ public class MainController {
         AwordsX.setText(String.valueOf(coordinates.get("words").get("x")));
         AwordsY.setText(String.valueOf(coordinates.get("words").get("y")));
     }
-
     private int cmToPoints(double cm) {
         // 1 cm = 0.3937 inch, 1 inch = 72 points
         return (int) (cm * 0.3937 * 72);
     }
-
-    public Map<String, Object> getCoordinates() {
+    private Map<String, Object> getCoordinates() {
         Map<String, Object> cheque = new HashMap<>();
         cheque.put("name", Profile_Name.getText());
         double dateXcm = Double.parseDouble(dateX.getText());
@@ -216,19 +219,41 @@ public class MainController {
 
         return cheque;
     }
-
-    public void printDocument() {
-        double width = 17.3, height = 7.3;
-
-        Map<String, Object> chequeData = new HashMap<>();
-        chequeData.put("date", dDate.getValue().toString());
-        chequeData.put("payee", Dpayee.getText());
-        chequeData.put("amountDigits", Ddigits.getText());
-        chequeData.put("amountWords", Dwords.getText());
-
-        SaveHelper.saveAsPDF(cmToPoints(width), cmToPoints(height), toPT(getCoordinates()), chequeData);
-
+    private void checkAndHighlightEmptyFields(DatePicker... datePickers) {
+        for (DatePicker datePicker : datePickers) {
+            if (datePicker.getValue() == null) {
+                // If the date picker is empty, apply a red border
+                datePicker.setStyle("-fx-border-color: red;");
+            } else {
+                // If not empty, remove any custom styling
+                datePicker.setStyle("");
+            }
+        }
     }
+
+    private void checkAndHighlightEmptyFields(TextField... textFields) {
+        for (TextField textField : textFields) {
+            if (textField.getText().trim().isEmpty()) {
+                // If the text field is empty, apply a red border
+                textField.setStyle("-fx-border-color: red;");
+            } else {
+                // If not empty, remove any custom styling
+                textField.setStyle("");
+            }
+        }
+    }
+    private void checkAndHighlightEmptyFields(TextArea... textAreas) {
+        for (TextArea textArea : textAreas) {
+            if (textArea.getText().trim().isEmpty()) {
+                // If the text area is empty, apply a red border
+                textArea.setStyle("-fx-border-color: red;");
+            } else {
+                // If not empty, remove any custom styling
+                textArea.setStyle("");
+            }
+        }
+    }
+
     private Map<String, Object> toPT(Map<String, Object> coordinates) {
         Map<String, Object> coordinatesInPoints = new HashMap<>();
 
@@ -242,12 +267,13 @@ public class MainController {
                 double xCm = coordinatesInCm.get("x");
                 double yCm = coordinatesInCm.get("y");
 
+
                 // Convert x and y coordinates from centimeters to points
-                int xPoints = cmToPoints(xCm);
-                int yPoints = cmToPoints(yCm);
+                double xPoints = cmToPoints(xCm);
+                double yPoints = cmToPoints(yCm);
 
                 // Put the converted coordinates into the new map
-                Map<String, Integer> convertedCoordinates = new HashMap<>();
+                Map<String, Double> convertedCoordinates = new HashMap<>();
                 convertedCoordinates.put("x", xPoints);
                 convertedCoordinates.put("y", yPoints);
                 coordinatesInPoints.put(key, convertedCoordinates);
@@ -258,6 +284,65 @@ public class MainController {
         }
 
         return coordinatesInPoints;
+    }
+
+    private boolean isDirectoryChooserEmpty(Button ChooseDirectory) {
+        return ChooseDirectory.getText().contains("Select...");
+    }
+    private void checkAndHighlightDirectoryChooser(Button b){
+
+        if (isDirectoryChooserEmpty(b)){
+            b.setStyle("-fx-border-color: red;");
+        }else {
+            b.setStyle("");
+        }
+    }
+    private void checkAndHighlightEmptyFields(ComboBox<?>... comboBoxes) {
+        for (ComboBox<?> comboBox : comboBoxes) {
+            if (comboBox.getSelectionModel().isEmpty()) {
+                // If the combo box is empty, apply a red border
+                comboBox.setStyle("-fx-border-color: red;");
+            } else {
+                // If not empty, remove any custom styling
+                comboBox.setStyle("");
+            }
+        }
+    }
+    private boolean isCoordinatesValid(){
+      return  ! (dateX.getText().isEmpty()|| dateY.getText().isEmpty()|| PayeeX.getText().isEmpty()||PayeeY.getText().isEmpty()||
+                digitsX.getText().isEmpty() ||digitsY.getText().isEmpty()|| AwordsX.getText().isEmpty()|| AwordsY.getText().isEmpty()||
+                Profile_Name.getText().isEmpty());
+    }
+    private boolean isOtherSettingsValid(){
+        return !(isDirectoryChooserEmpty(ChooseDirectory)||
+                FontSize.getValue().isEmpty() ||
+                fontName.getValue().isEmpty() ||
+                Cents.getText().isEmpty() ||
+                Currency.getText().isEmpty());
+    }
+    private boolean isDataValid(){
+        return !(dDate.getValue() == null||Dpayee.getText().isEmpty()||
+                Ddigits.getText().isEmpty()||Dwords.getText().isEmpty());
+    }
+    private void printDocument() {
+        double width = 17.3, height = 7.3;
+        boolean b=(isDataValid()&&isCoordinatesValid());
+        if(!b){
+            checkAndHighlightEmptyFields(dDate);
+            checkAndHighlightEmptyFields(Dwords);
+            checkAndHighlightEmptyFields( dateX, dateY, PayeeX, PayeeY, digitsX, digitsY, AwordsX, AwordsY,Profile_Name,Dpayee, Ddigits);
+            showInvalidAlert("Something is not filled that was expect to be filled ");
+            return;
+        }
+
+        Map<String, Object> chequeData = new HashMap<>();
+        chequeData.put("date", dDate.getValue());
+        chequeData.put("payee", Dpayee.getText());
+        chequeData.put("amountDigits", Ddigits.getText());
+        chequeData.put("amountWords", Dwords.getText());
+
+        PDFHelper.saveAsPDF(cmToPoints(width), cmToPoints(height), toPT(getCoordinates()), chequeData, Profile_Name.getText());
+        ;
     }
 
 }

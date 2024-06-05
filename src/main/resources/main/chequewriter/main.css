@@ -1,0 +1,127 @@
+/* main.css */
+
+/* Root pane styling */
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: #e1eff6;
+}
+
+/* ComboBox styling */
+.combo-box {
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-border-color: #b7d5d4;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+/* TitledPane styling */
+.titled-pane {
+    -fx-start-margin: 20px;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #373e40;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+
+}
+
+.titled-pane > .title {
+    -fx-background-color: #b7d5d4;
+    -fx-border-color: #373e40;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 10px;
+    -fx-background-insets: 0;
+    -fx-border-radius: 5px 5px 0 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.titled-pane > .content {
+    -fx-padding: 0px;
+    -fx-background-color: white;
+    -fx-background-radius: 0 0 5px 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+/* Button styling */
+
+
+
+/* Label styling */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #373e40;
+    -fx-padding: 5px;
+}
+
+/* TextField styling */
+.text-field {
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-border-color: #b7d5d4;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+.button{
+    -fx-padding: 5px;
+    -fx-background-color: #355834;
+    -fx-fill: #CDD3CE;
+    -fx-text-fill: #CDD3CE;
+
+}
+#ChooseDirectory{
+    -fx-background-color: #41658A;
+}
+/* TextArea styling */
+.text-area {
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-border-color: #b7d5d4;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+/* DatePicker styling */
+.date-picker {
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-border-color: #b7d5d4;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+/* GridPane styling */
+.grid-pane {
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+}
+
+/* VBox styling */
+.vbox {
+    -fx-spacing: 10px;
+}
+
+/* HBox styling */
+.hbox {
+    -fx-spacing: 10px;
+}
+
+/* AnchorPane styling */
+.anchor-pane {
+    -fx-padding: 20px;
+}
+
+/* Insets for internal padding */
+.insets {
+    -fx-padding: 10px;
+}
