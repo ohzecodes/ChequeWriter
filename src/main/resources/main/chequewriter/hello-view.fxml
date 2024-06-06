@@ -19,7 +19,7 @@
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity" prefHeight="909.0" prefWidth="1080.0"
-            xmlns="http://javafx.com/javafx/18.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.chequewriter.MainController">
+            xmlns="http://javafx.com/javafx/17.0.7" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.chequewriter.MainController">
    <children>
 
        <ComboBox fx:id="bankCombo" layoutX="31.0" layoutY="13.0" prefHeight="26.0" prefWidth="454.0" />
