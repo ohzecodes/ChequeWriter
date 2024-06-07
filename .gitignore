@@ -38,5 +38,6 @@ build/
 ### Mac OS ###
 .DS_Store
 **/*.db
-*/META-INF/*
+META-INF
 Readme.md
+**/out/l4.xml
